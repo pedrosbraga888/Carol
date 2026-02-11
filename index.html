@@ -271,13 +271,15 @@
     }
 
     .paper .content{
-      height:100%;
-      overflow:auto;
-      padding:16px 18px 120px; /* espaço p/ botões */
-      color: var(--ink);
-      line-height:1.7;
-      font-size:16px;
-    }
+    height: calc(100% - 64px);   /* 64px ~ altura do header */
+    overflow:auto;
+    padding:16px 18px 160px;     /* mais espaço para chegar ao fim */
+    color: var(--ink);
+    line-height:1.7;
+    font-size:16px;
+    scroll-behavior: smooth;
+  }
+
 
     /* texto da carta (não editável) */
     .letter{
@@ -490,8 +492,7 @@
               <p>Com amor,<br>Pedro</p>
             </div>
 
-            <div style="height:34px"></div>
-            <div id="endSentinel" aria-hidden="true"></div>
+            <div id="endSentinel" aria-hidden="true" style="height:1px; margin-top:40px;"></div>
           </div>
 
           <div class="nudge" id="nudge" aria-live="polite">
