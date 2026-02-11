@@ -279,19 +279,24 @@
       font-size:16px;
     }
 
-    /* zona editável */
-    .editable{
-      outline:none;
+    /* texto da carta (não editável) */
+    .letter{
       border-radius:12px;
       padding:14px 14px;
       background: rgba(255,255,255,.55);
       border: 1px solid rgba(0,0,0,.06);
       box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    
+      user-select: text;          /* dá para selecionar e copiar */
+      cursor: default;            /* não aparece cursor de edição */
+      -webkit-user-modify: read-only;
+      min-height: 180px;          /* garante que a caixa existe */
     }
-    .editable:empty::before{
-      content:"(Escreve aqui a tua carta… 💌)";
-      opacity:.55;
-    }
+    
+    /* tipografia dos parágrafos */
+    .letter p{ margin: 0 0 12px; }
+    .letter p:last-child{ margin-bottom: 0; }
+
 
     /* botões no fim */
     .choices{
@@ -469,7 +474,7 @@
           </header>
 
           <div class="content" id="paperScroll">
-            <div class="editable" id="letter" aria-label="Texto da carta">
+            <div class="letter" id="letter" aria-label="Texto da carta">
               <p>Meu amor,</p>
             
               <p>
