@@ -491,8 +491,6 @@
             
               <p>Com amor,<br>Pedro</p>
             </div>
-
-            <div id="endSentinel" aria-hidden="true" style="height:1px; margin-top:40px;"></div>
           </div>
 
           <div class="nudge" id="nudge" aria-live="polite">
@@ -525,7 +523,6 @@
     const paperScroll = document.getElementById('paperScroll');
 
     const choices = document.getElementById('choices');
-    const endSentinel = document.getElementById('endSentinel');
 
     const btnAccept = document.getElementById('btnAccept');
     const btnForever = document.getElementById('btnForever');
@@ -558,15 +555,22 @@
       }
     });
 
-    // Mostrar botões apenas quando chegar ao fim do scroll
-    const obs = new IntersectionObserver((entries) => {
-      const hit = entries.some(en => en.isIntersecting);
-      if (hit) choices.classList.add('show');
-    }, {
-      root: paperScroll,
-      threshold: 0.9
-    });
-    obs.observe(endSentinel);
+    function maybeShowChoices() {
+    // quão perto do fim (em px) conta como "cheguei ao fim"
+    const margin = 40;
+  
+    const atBottom =
+      paperScroll.scrollTop + paperScroll.clientHeight >= paperScroll.scrollHeight - margin;
+  
+    if (atBottom) choices.classList.add('show');
+  }
+  
+  // verificar ao fazer scroll
+  paperScroll.addEventListener('scroll', maybeShowChoices, { passive: true });
+  
+  // e também logo após abrir (caso não haja scroll porque o texto é curto)
+  setTimeout(maybeShowChoices, 800);
+
 
     btnAccept.addEventListener('click', () => {
       // mostra cruz + seta 🙄 a apontar para o outro botão
