@@ -214,71 +214,32 @@
 
     /* ====== PAPEL (aparece após abrir) ====== */
     .paper{
-      position:absolute;
-      left:50%;
-      top: 18%;
-      width: min(460px, 86vw);
-      height: min(70vh, 540px);
-      transform: translateX(-50%) translateY(120px);
-      opacity:0;
-      z-index:3;
-      border-radius:16px;
-      background:
-        radial-gradient(900px 500px at 20% 0%, rgba(255,232,240,.9), transparent 60%),
-        radial-gradient(700px 400px at 80% 30%, rgba(255,241,228,.9), transparent 60%),
-        linear-gradient(180deg, var(--paper), var(--paper2));
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
-      border: 1px solid rgba(0,0,0,.08);
-    }
+  position:absolute;
+  left:50%;
+  top:18%;
+  width:min(460px, 86vw);
+  height:min(70vh, 540px);
 
-    .paper::before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 28px);
-      opacity:.22;
-      pointer-events:none;
-    }
+  transform: translateX(-50%) translateY(120px);
+  opacity:0;
+  z-index:3;
 
-    .paper header{
-      position:sticky;
-      top:0;
-      padding:16px 18px 10px;
-      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.35), transparent);
-      backdrop-filter: blur(6px);
-      z-index:2;
-      border-bottom: 1px solid rgba(0,0,0,.06);
-    }
+  border-radius:16px;
+  background:
+    radial-gradient(900px 500px at 20% 0%, rgba(255,232,240,.9), transparent 60%),
+    radial-gradient(700px 400px at 80% 30%, rgba(255,241,228,.9), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--paper2));
 
-    .paper header .title{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      color: var(--ink);
-    }
-    .paper header .title h1{
-      margin:0;
-      font-size:18px;
-      letter-spacing:.02em;
-    }
-    .paper header .title .sub{
-      font-size:12px;
-      opacity:.75;
-      white-space:nowrap;
-    }
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,.08);
 
-    .paper .content{
-    height: calc(100% - 64px);   /* 64px ~ altura do header */
-    overflow:auto;
-    padding:16px 18px 160px;     /* mais espaço para chegar ao fim */
-    color: var(--ink);
-    line-height:1.7;
-    font-size:16px;
-    scroll-behavior: smooth;
-  }
+  display:flex;
+  flex-direction:column;
+
+  overflow:hidden;
+
+  transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
+}
 
 
     /* texto da carta (não editável) */
