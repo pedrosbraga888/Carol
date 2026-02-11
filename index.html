@@ -486,82 +486,98 @@
   </div>
 
   <script>
-    const wrap = document.getElementById('wrap');
-    const seal = document.getElementById('seal');
-    const paperScroll = document.getElementById('paperScroll');
-    const choices = document.getElementById('choices');
-    const btnAccept = document.getElementById('btnAccept');
-    const btnForever = document.getElementById('btnForever');
-    const nudge = document.getElementById('nudge');
-    const final = document.getElementById('final');
+  const wrap = document.getElementById('wrap');
+  const seal = document.getElementById('seal');
+  const paperScroll = document.getElementById('paperScroll');
+  const choices = document.getElementById('choices');
+  const btnAccept = document.getElementById('btnAccept');
+  const btnForever = document.getElementById('btnForever');
+  const nudge = document.getElementById('nudge');
+  const final = document.getElementById('final');
 
-    let opened = false;
-    let choicesLocked = false; // para não “desaparecer” depois de aparecer
+  let opened = false;
+  let choicesShown = false;
 
-    function maybeShowChoices() {
-      if (choicesLocked) return;
+  function showChoices(){
+    if (choicesShown) return;
+    choicesShown = true;
+    choices.classList.add('show');
+  }
 
-      const margin = 60; // margem mais generosa para telemóvel
+  function maybeShowChoices(){
+    if (choicesShown) return;
 
-      const noScroll = paperScroll.scrollHeight <= paperScroll.clientHeight + 2;
-      const atBottom =
-        paperScroll.scrollTop + paperScroll.clientHeight >= paperScroll.scrollHeight - margin;
+    // Se não houver scroll (carta curta), mostra logo
+    const noScroll = paperScroll.scrollHeight <= paperScroll.clientHeight + 2;
+    if (noScroll) return showChoices();
 
-      if (noScroll || atBottom) {
-        choices.classList.add('show');
-        choicesLocked = true; // uma vez mostrado, fica mostrado
-      }
+    // Detectar "perto do fim" com margem generosa (desktop e mobile)
+    const margin = 140; // aumenta a tolerância
+    const atBottom =
+      Math.ceil(paperScroll.scrollTop + paperScroll.clientHeight) >= (paperScroll.scrollHeight - margin);
+
+    if (atBottom) showChoices();
+  }
+
+  function openLetter(){
+    if (opened) return;
+    opened = true;
+
+    wrap.classList.add('is-open');
+
+    // verificar várias vezes enquanto o layout/animação assenta
+    setTimeout(() => { paperScroll.scrollTop = 0; maybeShowChoices(); }, 200);
+    setTimeout(() => { maybeShowChoices(); }, 700);
+    setTimeout(() => { maybeShowChoices(); }, 1200);
+  }
+
+  // Eventos para abrir
+  seal.addEventListener('click', openLetter);
+  seal.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLetter();
     }
+  });
 
-    function openLetter(){
-      if (opened) return;
-      opened = true;
+  // Eventos de scroll
+  paperScroll.addEventListener('scroll', maybeShowChoices, { passive:true });
+  paperScroll.addEventListener('wheel', maybeShowChoices, { passive:true });
+  paperScroll.addEventListener('touchend', maybeShowChoices, { passive:true });
 
-      wrap.classList.add('is-open');
+  // Extra: se a janela mudar (ex. rodar telemóvel / redimensionar), reavaliar
+  window.addEventListener('resize', () => {
+    // não “desliga” os botões; apenas tenta mostrar se ainda não mostrou
+    setTimeout(maybeShowChoices, 150);
+  });
 
-      // chamar mais do que uma vez porque em mobile o layout “assenta” após a animação
-      setTimeout(() => { paperScroll.scrollTop = 0; maybeShowChoices(); }, 500);
-      setTimeout(() => { maybeShowChoices(); }, 1100);
-      setTimeout(() => { maybeShowChoices(); }, 1700);
-    }
+  // Botões
+  btnAccept.addEventListener('click', () => {
+    nudge.classList.add('show');
 
-    seal.addEventListener('click', openLetter);
-    seal.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openLetter();
-      }
-    });
+    btnForever.animate(
+      [
+        { transform: 'translateY(0) scale(1)' },
+        { transform: 'translateY(-2px) scale(1.03)' },
+        { transform: 'translateY(0) scale(1)' }
+      ],
+      { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' }
+    );
 
-    paperScroll.addEventListener('scroll', maybeShowChoices, { passive: true });
-    paperScroll.addEventListener('touchend', maybeShowChoices, { passive: true });
+    setTimeout(() => nudge.classList.remove('show'), 2200);
+  });
 
-    btnAccept.addEventListener('click', () => {
-      nudge.classList.add('show');
+  btnForever.addEventListener('click', () => {
+    final.classList.add('show');
+  });
 
-      btnForever.animate(
-        [
-          { transform: 'translateY(0) scale(1)' },
-          { transform: 'translateY(-2px) scale(1.03)' },
-          { transform: 'translateY(0) scale(1)' }
-        ],
-        { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' }
-      );
-
-      setTimeout(() => nudge.classList.remove('show'), 2200);
-    });
-
-    btnForever.addEventListener('click', () => {
-      final.classList.add('show');
-    });
-
-    final.addEventListener('click', (e) => {
-      if (e.target === final) final.classList.remove('show');
-    });
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') final.classList.remove('show');
-    });
-  </script>
+  // fechar overlay final
+  final.addEventListener('click', (e) => {
+    if (e.target === final) final.classList.remove('show');
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') final.classList.remove('show');
+  });
+</script>
 </body>
 </html>
