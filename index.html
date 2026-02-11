@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Carta ❤️</title>
+
   <style>
     :root{
       --bg1:#120915;
@@ -12,20 +13,21 @@
       --paper2:#ffe9ef;
       --ink:#2a1b22;
       --red:#b10f2e;
-      --gold:#d9b06f;
       --shadow: 0 20px 60px rgba(0,0,0,.45);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:#fff;
-      overflow:hidden; /* fica escondido até abrir */
-      background: radial-gradient(1200px 600px at 20% 10%, #3a1430 0%, transparent 65%),
-                  radial-gradient(900px 700px at 90% 30%, #1c0e2f 0%, transparent 60%),
-                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden; /* não deixa a página scrollar; só o papel */
+      background:
+        radial-gradient(1200px 600px at 20% 10%, #3a1430 0%, transparent 65%),
+        radial-gradient(900px 700px at 90% 30%, #1c0e2f 0%, transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
     }
 
     /* ====== palco ====== */
@@ -36,14 +38,12 @@
       padding:24px;
     }
 
-    /* ====== ENVELOPE / CARTA ANTIGA ====== */
+    /* ====== ENVELOPE ====== */
     .envelope-wrap{
       position:relative;
       width:min(520px, 92vw);
       aspect-ratio: 16/11;
       filter: drop-shadow(0 18px 35px rgba(0,0,0,.55));
-      transform: translateY(0);
-      transition: transform .8s ease;
     }
 
     .envelope{
@@ -56,21 +56,17 @@
       overflow:hidden;
     }
 
-    /* textura “antiga” */
     .envelope::before{
       content:"";
       position:absolute; inset:-30%;
       background:
-        repeating-linear-gradient(30deg,
-          rgba(0,0,0,.03) 0 2px,
-          rgba(255,255,255,.02) 2px 6px),
+        repeating-linear-gradient(30deg, rgba(0,0,0,.03) 0 2px, rgba(255,255,255,.02) 2px 6px),
         radial-gradient(closest-side, rgba(0,0,0,.06), transparent 70%);
       opacity:.55;
       transform: rotate(8deg);
       pointer-events:none;
     }
 
-    /* bordas e carimbo/linhas */
     .envelope::after{
       content:"";
       position:absolute; inset:18px;
@@ -99,7 +95,6 @@
       border-bottom: 1px solid rgba(90,55,25,.25);
     }
 
-    /* triangulo do fundo (parte de trás da aba) */
     .flap-back{
       position:absolute; inset:0;
       background: linear-gradient(180deg, #e3c6aa, #e9d2ba);
@@ -109,7 +104,6 @@
       transform: translateY(2px);
     }
 
-    /* laterais */
     .side{
       position:absolute; inset:0;
       z-index:2;
@@ -131,14 +125,6 @@
       border-left: 1px solid rgba(90,55,25,.18);
     }
 
-    /* base */
-    .base{
-      position:absolute; left:-2px; right:-2px; bottom:-2px; height:62%;
-      z-index:1;
-      background: linear-gradient(180deg, #f2e3d2 0%, #e6cbb1 80%, #dfc0a3 100%);
-      clip-path: polygon(0 0, 100% 0, 50% 78%, 0 0);
-      opacity:0; /* escondido */
-    }
     .bottom{
       position:absolute; left:-2px; right:-2px; bottom:-2px; height:62%;
       z-index:1;
@@ -147,7 +133,7 @@
       border-top: 1px solid rgba(90,55,25,.22);
     }
 
-    /* selo vermelho (clicável) */
+    /* selo */
     .seal{
       position:absolute;
       left:50%; top:55%;
@@ -178,7 +164,7 @@
       text-shadow: 0 2px 10px rgba(0,0,0,.35);
     }
 
-    /* apontador “Clica para abrir” */
+    /* hint */
     .hint{
       position:absolute;
       right: 12px;
@@ -212,56 +198,100 @@
       50%{ transform: rotate(-18deg) translateY(4px); }
     }
 
-    /* ====== PAPEL (aparece após abrir) ====== */
+    /* ====== PAPEL (FLEX + SCROLL FIX iOS) ====== */
     .paper{
-  position:absolute;
-  left:50%;
-  top:18%;
-  width:min(460px, 86vw);
-  height:min(70vh, 540px);
+      position:absolute;
+      left:50%;
+      top:18%;
+      width:min(460px, 86vw);
+      height:min(70vh, 540px);
 
-  transform: translateX(-50%) translateY(120px);
-  opacity:0;
-  z-index:3;
+      transform: translateX(-50%) translateY(120px);
+      opacity:0;
+      z-index:3;
 
-  border-radius:16px;
-  background:
-    radial-gradient(900px 500px at 20% 0%, rgba(255,232,240,.9), transparent 60%),
-    radial-gradient(700px 400px at 80% 30%, rgba(255,241,228,.9), transparent 60%),
-    linear-gradient(180deg, var(--paper), var(--paper2));
+      border-radius:16px;
+      background:
+        radial-gradient(900px 500px at 20% 0%, rgba(255,232,240,.9), transparent 60%),
+        radial-gradient(700px 400px at 80% 30%, rgba(255,241,228,.9), transparent 60%),
+        linear-gradient(180deg, var(--paper), var(--paper2));
 
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(0,0,0,.08);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.08);
 
-  display:flex;
-  flex-direction:column;
+      display:flex;
+      flex-direction:column;
 
-  overflow:hidden;
+      overflow:hidden;
+      transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
+    }
 
-  transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
-}
+    .paper::before{
+      content:"";
+      position:absolute; inset:0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 28px);
+      opacity:.22;
+      pointer-events:none;
+    }
 
+    .paper header{
+      position:relative;
+      padding:16px 18px 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.35), transparent);
+      backdrop-filter: blur(6px);
+      z-index:2;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      flex: 0 0 auto;
+    }
 
-    /* texto da carta (não editável) */
+    .paper header .title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color: var(--ink);
+    }
+    .paper header .title h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.02em;
+    }
+    .paper header .title .sub{
+      font-size:12px;
+      opacity:.75;
+      white-space:nowrap;
+    }
+
+    /* ✅ IMPORTANTÍSSIMO EM FLEX: min-height:0 para o scroll funcionar (especialmente iOS) */
+    .paper .content{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow:auto;
+
+      padding:16px 18px 160px; /* espaço para os botões */
+      color: var(--ink);
+      line-height:1.7;
+      font-size:16px;
+
+      -webkit-overflow-scrolling: touch; /* iOS */
+      overscroll-behavior: contain;
+      touch-action: pan-y;
+    }
+
     .letter{
       border-radius:12px;
       padding:14px 14px;
       background: rgba(255,255,255,.55);
       border: 1px solid rgba(0,0,0,.06);
       box-shadow: 0 8px 24px rgba(0,0,0,.08);
-    
-      user-select: text;          /* dá para selecionar e copiar */
-      cursor: default;            /* não aparece cursor de edição */
+      user-select:text;
+      cursor:default;
       -webkit-user-modify: read-only;
-      min-height: 180px;          /* garante que a caixa existe */
     }
-    
-    /* tipografia dos parágrafos */
     .letter p{ margin: 0 0 12px; }
     .letter p:last-child{ margin-bottom: 0; }
 
-
-    /* botões no fim */
+    /* botões */
     .choices{
       position:absolute;
       left:0; right:0; bottom:0;
@@ -273,6 +303,7 @@
       border-top: 1px solid rgba(0,0,0,.06);
       transform: translateY(110%);
       transition: transform .5s cubic-bezier(.2,.8,.2,1);
+      z-index:5;
     }
     .choices.show{ transform: translateY(0); }
 
@@ -291,7 +322,7 @@
     button:active{ transform: translateY(1px); }
 
     .btn-accept{
-      background: #ffffff;
+      background:#ffffff;
       color:#2a1b22;
       border:1px solid rgba(0,0,0,.10);
     }
@@ -300,7 +331,7 @@
       color:white;
     }
 
-    /* resposta ao clicar “Aceito” */
+    /* nudge */
     .nudge{
       position:absolute;
       left:0; right:0;
@@ -313,11 +344,9 @@
       transform: translateY(10px);
       transition: opacity .25s ease, transform .25s ease;
       pointer-events:none;
+      z-index:6;
     }
-    .nudge.show{
-      opacity:1;
-      transform: translateY(0);
-    }
+    .nudge.show{ opacity:1; transform: translateY(0); }
     .nudge .x{
       font-size:42px;
       color: var(--red);
@@ -336,16 +365,10 @@
       border-radius:999px;
       box-shadow: 0 12px 28px rgba(0,0,0,.12);
     }
-    .nudge .arrow .emoji{
-      font-size:24px;
-    }
-    .nudge .arrow .txt{
-      font-size:14px;
-      opacity:.9;
-      white-space:nowrap;
-    }
+    .nudge .arrow .emoji{ font-size:24px; }
+    .nudge .arrow .txt{ font-size:14px; opacity:.9; white-space:nowrap; }
 
-    /* mensagem final */
+    /* final */
     .final{
       position:fixed; inset:0;
       display:grid;
@@ -358,13 +381,10 @@
       padding:24px;
       text-align:center;
     }
-    .final.show{
-      opacity:1;
-      pointer-events:auto;
-    }
+    .final.show{ opacity:1; pointer-events:auto; }
     .final .box{
       max-width: 720px;
-      width: 100%;
+      width:100%;
       padding: 28px 18px;
       border-radius: 22px;
       background: rgba(20,10,16,.55);
@@ -378,9 +398,7 @@
       letter-spacing:.03em;
     }
 
-    /* ====== ESTADOS ====== */
-    .opened body{ overflow:hidden; }
-
+    /* estados */
     .is-open .hint{ opacity:0; }
     .is-open .seal{
       pointer-events:none;
@@ -388,22 +406,17 @@
       filter: saturate(.9) brightness(.95);
       opacity:.85;
     }
-    .is-open .flap{
-      transform: rotateX(165deg);
-    }
-    .is-open .flap-back{
-      opacity:1;
-    }
+    .is-open .flap{ transform: rotateX(165deg); }
+    .is-open .flap-back{ opacity:1; }
     .is-open .paper{
       opacity:1;
       transform: translateX(-50%) translateY(0);
       z-index:10;
     }
 
-    /* mobile: ligeira subida */
     @media (max-width: 520px){
-      .hint{ right: 6px; top: 10px; }
-      .hint .tag{ font-size: 13px; padding: 9px 10px; }
+      .hint{ right:6px; top:10px; }
+      .hint .tag{ font-size:13px; padding:9px 10px; }
       .seal{ width:104px; height:104px; }
     }
   </style>
@@ -413,9 +426,7 @@
   <div class="stage">
     <div class="envelope-wrap" id="wrap" aria-label="Carta antiga com selo">
       <div class="envelope" role="img" aria-label="Envelope antigo">
-        <div class="flap">
-          <div class="flap-back"></div>
-        </div>
+        <div class="flap"><div class="flap-back"></div></div>
         <div class="side"></div>
         <div class="bottom"></div>
 
@@ -439,19 +450,26 @@
           <div class="content" id="paperScroll">
             <div class="letter" id="letter" aria-label="Texto da carta">
               <p>Meu amor,</p>
-            
+
               <p>
-                Desde que entraste na minha vida, tudo ganhou uma cor diferente, mais viva, mais bonita e mais cheia de significado. Nos pequenos gestos, nos sorrisos partilhados e nos momentos simples ao teu lado, encontrei uma felicidade que nunca soube explicar, mas que sinto todos os dias quando penso em ti ou estou contigo.
-                O Dia de São Valentim é apenas mais um pretexto para celebrar aquilo que sentimos, porque, na verdade, qualquer dia é especial quando estou contigo. Quero aproveitar este dia para criar mais uma memória bonita ao teu lado, para te fazer sorrir, para te abraçar, beijar e para te lembrar o quanto és importante para mim.
-                Gostava de te convidar para passares este Dia de São Valentim comigo, para partilharmos mais momentos únicos, cheios de carinho, cumplicidade e amor. Quero que seja um dia incrivel como tu, onde possamos simplesmente aproveitar a companhia um do outro e celebrar, mais uma vez, aquilo que construímos juntos.
+                Desde que entraste na minha vida, tudo ganhou uma cor diferente, mais viva, mais bonita e mais cheia de significado.
+                Nos pequenos gestos, nos sorrisos partilhados e nos momentos simples ao teu lado, encontrei uma felicidade que nunca
+                soube explicar, mas que sinto todos os dias quando penso em ti ou estou contigo.
+                O Dia de São Valentim é apenas mais um pretexto para celebrar aquilo que sentimos, porque, na verdade, qualquer dia é
+                especial quando estou contigo. Quero aproveitar este dia para criar mais uma memória bonita ao teu lado, para te fazer sorrir,
+                para te abraçar, beijar e para te lembrar o quanto és importante para mim.
+                Gostava de te convidar para passares este Dia de São Valentim comigo, para partilharmos mais momentos únicos, cheios de carinho,
+                cumplicidade e amor. Quero que seja um dia incrível como tu, onde possamos simplesmente aproveitar a companhia um do outro e celebrar,
+                mais uma vez, aquilo que construímos juntos.
               </p>
-            
-              <p>
-                Com isto pergunto...Will you be my Valentine? ❤️
-              </p>
-            
+
+              <p>Com isto pergunto... Will you be my Valentine? ❤️</p>
+
               <p>Com amor,<br>Pedro</p>
             </div>
+
+            <!-- espaçador extra para garantir “fim” e o scroll bater mesmo lá em baixo -->
+            <div style="height:24px"></div>
           </div>
 
           <div class="nudge" id="nudge" aria-live="polite">
@@ -480,32 +498,36 @@
   <script>
     const wrap = document.getElementById('wrap');
     const seal = document.getElementById('seal');
-    const paper = document.getElementById('paper');
     const paperScroll = document.getElementById('paperScroll');
-
     const choices = document.getElementById('choices');
-
     const btnAccept = document.getElementById('btnAccept');
     const btnForever = document.getElementById('btnForever');
-
     const nudge = document.getElementById('nudge');
     const final = document.getElementById('final');
 
     let opened = false;
-    let nudgeShown = false;
+
+    function maybeShowChoices() {
+      const margin = 40;
+
+      const atBottom =
+        paperScroll.scrollTop + paperScroll.clientHeight >= paperScroll.scrollHeight - margin;
+
+      if (atBottom) choices.classList.add('show');
+      else choices.classList.remove('show'); // se quiseres que desapareça ao subir, deixa; se não, apaga esta linha
+    }
 
     function openLetter(){
       if (opened) return;
       opened = true;
-      document.body.style.overflow = 'hidden';
+
       wrap.classList.add('is-open');
 
-      // foco suave no papel
+      // iOS/Android: dá um instante para o layout calcular alturas e depois valida scroll/botões
       setTimeout(() => {
-        paperScroll.focus?.();
-        // permitir scroll dentro do papel mesmo em mobile
         paperScroll.scrollTop = 0;
-      }, 650);
+        maybeShowChoices(); // caso a carta seja curta (sem scroll), mostra logo
+      }, 700);
     }
 
     seal.addEventListener('click', openLetter);
@@ -516,36 +538,20 @@
       }
     });
 
-    function maybeShowChoices() {
-    // quão perto do fim (em px) conta como "cheguei ao fim"
-    const margin = 40;
-  
-    const atBottom =
-      paperScroll.scrollTop + paperScroll.clientHeight >= paperScroll.scrollHeight - margin;
-  
-    if (atBottom) choices.classList.add('show');
-  }
-  
-  // verificar ao fazer scroll
-  paperScroll.addEventListener('scroll', maybeShowChoices, { passive: true });
-  
-  // e também logo após abrir (caso não haja scroll porque o texto é curto)
-  setTimeout(maybeShowChoices, 800);
-
+    paperScroll.addEventListener('scroll', maybeShowChoices, { passive: true });
 
     btnAccept.addEventListener('click', () => {
-      // mostra cruz + seta 🙄 a apontar para o outro botão
-      nudgeShown = true;
       nudge.classList.add('show');
 
-      // efeito “empurrão” no botão certo
-      btnForever.animate([
-        { transform: 'translateY(0) scale(1)' },
-        { transform: 'translateY(-2px) scale(1.03)' },
-        { transform: 'translateY(0) scale(1)' }
-      ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+      btnForever.animate(
+        [
+          { transform: 'translateY(0) scale(1)' },
+          { transform: 'translateY(-2px) scale(1.03)' },
+          { transform: 'translateY(0) scale(1)' }
+        ],
+        { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' }
+      );
 
-      // não deixa empilhar animações
       setTimeout(() => nudge.classList.remove('show'), 2200);
     });
 
@@ -553,10 +559,10 @@
       final.classList.add('show');
     });
 
-    // fechar overlay final ao clicar fora (opcional)
     final.addEventListener('click', (e) => {
       if (e.target === final) final.classList.remove('show');
     });
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') final.classList.remove('show');
     });
