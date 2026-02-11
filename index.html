@@ -23,14 +23,13 @@
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:#fff;
-      overflow:hidden; /* não deixa a página scrollar; só o papel */
+      overflow:hidden;
       background:
         radial-gradient(1200px 600px at 20% 10%, #3a1430 0%, transparent 65%),
         radial-gradient(900px 700px at 90% 30%, #1c0e2f 0%, transparent 60%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
     }
 
-    /* ====== palco ====== */
     .stage{
       height:100%;
       display:grid;
@@ -38,7 +37,6 @@
       padding:24px;
     }
 
-    /* ====== ENVELOPE ====== */
     .envelope-wrap{
       position:relative;
       width:min(520px, 92vw);
@@ -75,7 +73,6 @@
       pointer-events:none;
     }
 
-    /* aba superior */
     .flap{
       position:absolute;
       left:-2px; right:-2px; top:-2px;
@@ -104,10 +101,7 @@
       transform: translateY(2px);
     }
 
-    .side{
-      position:absolute; inset:0;
-      z-index:2;
-    }
+    .side{ position:absolute; inset:0; z-index:2; }
     .side::before, .side::after{
       content:"";
       position:absolute; top:20%; bottom:-2px; width:52%;
@@ -133,7 +127,6 @@
       border-top: 1px solid rgba(90,55,25,.22);
     }
 
-    /* selo */
     .seal{
       position:absolute;
       left:50%; top:55%;
@@ -164,11 +157,10 @@
       text-shadow: 0 2px 10px rgba(0,0,0,.35);
     }
 
-    /* hint */
     .hint{
       position:absolute;
-      right: 12px;
-      top: 18px;
+      right:12px;
+      top:18px;
       z-index:7;
       display:flex;
       align-items:center;
@@ -198,32 +190,33 @@
       50%{ transform: rotate(-18deg) translateY(4px); }
     }
 
-    /* ====== PAPEL (FLEX + SCROLL FIX iOS) ====== */
-    .paper{
+    /* ====== PAPEL (wrapper animado + papel sem transform) ====== */
+    .paper-wrap{
       position:absolute;
       left:50%;
       top:18%;
       width:min(460px, 86vw);
       height:min(70vh, 540px);
-
       transform: translateX(-50%) translateY(120px);
       opacity:0;
+      transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
       z-index:3;
+    }
 
+    .paper{
+      height:100%;
       border-radius:16px;
       background:
         radial-gradient(900px 500px at 20% 0%, rgba(255,232,240,.9), transparent 60%),
         radial-gradient(700px 400px at 80% 30%, rgba(255,241,228,.9), transparent 60%),
         linear-gradient(180deg, var(--paper), var(--paper2));
-
       box-shadow: var(--shadow);
       border: 1px solid rgba(0,0,0,.08);
+      overflow:hidden;
 
       display:flex;
       flex-direction:column;
-
-      overflow:hidden;
-      transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .6s ease;
+      position:relative;
     }
 
     .paper::before{
@@ -235,15 +228,13 @@
     }
 
     .paper header{
-      position:relative;
       padding:16px 18px 10px;
       background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.35), transparent);
       backdrop-filter: blur(6px);
-      z-index:2;
       border-bottom: 1px solid rgba(0,0,0,.06);
       flex: 0 0 auto;
+      z-index:2;
     }
-
     .paper header .title{
       display:flex;
       justify-content:space-between;
@@ -262,20 +253,20 @@
       white-space:nowrap;
     }
 
-    /* ✅ IMPORTANTÍSSIMO EM FLEX: min-height:0 para o scroll funcionar (especialmente iOS) */
+    /* ✅ iOS fix: min-height:0 + overflow + -webkit-overflow-scrolling */
     .paper .content{
       flex: 1 1 auto;
       min-height: 0;
       overflow:auto;
-
-      padding:16px 18px 160px; /* espaço para os botões */
+      padding:16px 18px 260px; /* MAIS espaço: garante que chegas ao fim */
       color: var(--ink);
       line-height:1.7;
       font-size:16px;
-
-      -webkit-overflow-scrolling: touch; /* iOS */
+      -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
       touch-action: pan-y;
+      position:relative;
+      z-index:1;
     }
 
     .letter{
@@ -291,7 +282,6 @@
     .letter p{ margin: 0 0 12px; }
     .letter p:last-child{ margin-bottom: 0; }
 
-    /* botões */
     .choices{
       position:absolute;
       left:0; right:0; bottom:0;
@@ -302,7 +292,7 @@
       background: linear-gradient(180deg, transparent, rgba(255,255,255,.78) 30%, rgba(255,255,255,.92));
       border-top: 1px solid rgba(0,0,0,.06);
       transform: translateY(110%);
-      transition: transform .5s cubic-bezier(.2,.8,.2,1);
+      transition: transform .45s cubic-bezier(.2,.8,.2,1);
       z-index:5;
     }
     .choices.show{ transform: translateY(0); }
@@ -331,7 +321,6 @@
       color:white;
     }
 
-    /* nudge */
     .nudge{
       position:absolute;
       left:0; right:0;
@@ -368,7 +357,6 @@
     .nudge .arrow .emoji{ font-size:24px; }
     .nudge .arrow .txt{ font-size:14px; opacity:.9; white-space:nowrap; }
 
-    /* final */
     .final{
       position:fixed; inset:0;
       display:grid;
@@ -398,7 +386,6 @@
       letter-spacing:.03em;
     }
 
-    /* estados */
     .is-open .hint{ opacity:0; }
     .is-open .seal{
       pointer-events:none;
@@ -408,7 +395,7 @@
     }
     .is-open .flap{ transform: rotateX(165deg); }
     .is-open .flap-back{ opacity:1; }
-    .is-open .paper{
+    .is-open .paper-wrap{
       opacity:1;
       transform: translateX(-50%) translateY(0);
       z-index:10;
@@ -439,52 +426,55 @@
           <div class="tag">Clica no centro para abrir</div>
         </div>
 
-        <section class="paper" id="paper" aria-label="Folha com a tua carta">
-          <header>
-            <div class="title">
-              <h1>Para ti 💗</h1>
-              <div class="sub">desce até ao fim</div>
+        <!-- wrapper que anima (o papel em si fica sem transform) -->
+        <div class="paper-wrap" id="paperWrap">
+          <section class="paper" aria-label="Folha com a tua carta">
+            <header>
+              <div class="title">
+                <h1>Para ti 💗</h1>
+                <div class="sub">desce até ao fim</div>
+              </div>
+            </header>
+
+            <div class="content" id="paperScroll">
+              <div class="letter" id="letter" aria-label="Texto da carta">
+                <p>Meu amor,</p>
+
+                <p>
+                  Desde que entraste na minha vida, tudo ganhou uma cor diferente, mais viva, mais bonita e mais cheia de significado.
+                  Nos pequenos gestos, nos sorrisos partilhados e nos momentos simples ao teu lado, encontrei uma felicidade que nunca
+                  soube explicar, mas que sinto todos os dias quando penso em ti ou estou contigo.
+                  O Dia de São Valentim é apenas mais um pretexto para celebrar aquilo que sentimos, porque, na verdade, qualquer dia é
+                  especial quando estou contigo. Quero aproveitar este dia para criar mais uma memória bonita ao teu lado, para te fazer sorrir,
+                  para te abraçar, beijar e para te lembrar o quanto és importante para mim.
+                  Gostava de te convidar para passares este Dia de São Valentim comigo, para partilharmos mais momentos únicos, cheios de carinho,
+                  cumplicidade e amor. Quero que seja um dia incrível como tu, onde possamos simplesmente aproveitar a companhia um do outro e celebrar,
+                  mais uma vez, aquilo que construímos juntos.
+                </p>
+
+                <p>Com isto pergunto... Will you be my Valentine? ❤️</p>
+
+                <p>Com amor,<br>Pedro</p>
+              </div>
+
+              <!-- espaçador real no fim (ajuda o “chegar mesmo ao fim”) -->
+              <div style="height:40px"></div>
             </div>
-          </header>
 
-          <div class="content" id="paperScroll">
-            <div class="letter" id="letter" aria-label="Texto da carta">
-              <p>Meu amor,</p>
-
-              <p>
-                Desde que entraste na minha vida, tudo ganhou uma cor diferente, mais viva, mais bonita e mais cheia de significado.
-                Nos pequenos gestos, nos sorrisos partilhados e nos momentos simples ao teu lado, encontrei uma felicidade que nunca
-                soube explicar, mas que sinto todos os dias quando penso em ti ou estou contigo.
-                O Dia de São Valentim é apenas mais um pretexto para celebrar aquilo que sentimos, porque, na verdade, qualquer dia é
-                especial quando estou contigo. Quero aproveitar este dia para criar mais uma memória bonita ao teu lado, para te fazer sorrir,
-                para te abraçar, beijar e para te lembrar o quanto és importante para mim.
-                Gostava de te convidar para passares este Dia de São Valentim comigo, para partilharmos mais momentos únicos, cheios de carinho,
-                cumplicidade e amor. Quero que seja um dia incrível como tu, onde possamos simplesmente aproveitar a companhia um do outro e celebrar,
-                mais uma vez, aquilo que construímos juntos.
-              </p>
-
-              <p>Com isto pergunto... Will you be my Valentine? ❤️</p>
-
-              <p>Com amor,<br>Pedro</p>
+            <div class="nudge" id="nudge" aria-live="polite">
+              <div class="x">✖</div>
+              <div class="arrow">
+                <div class="emoji">🙄</div>
+                <div class="txt">Agora o outro 😄</div>
+              </div>
             </div>
 
-            <!-- espaçador extra para garantir “fim” e o scroll bater mesmo lá em baixo -->
-            <div style="height:24px"></div>
-          </div>
-
-          <div class="nudge" id="nudge" aria-live="polite">
-            <div class="x">✖</div>
-            <div class="arrow">
-              <div class="emoji">🙄</div>
-              <div class="txt">Agora o outro 😄</div>
+            <div class="choices" id="choices" aria-label="Escolhas">
+              <button class="btn-accept" id="btnAccept" type="button">Aceito</button>
+              <button class="btn-forever" id="btnForever" type="button">Sim hoje, e sim sempre</button>
             </div>
-          </div>
-
-          <div class="choices" id="choices" aria-label="Escolhas">
-            <button class="btn-accept" id="btnAccept" type="button">Aceito</button>
-            <button class="btn-forever" id="btnForever" type="button">Sim hoje, e sim sempre</button>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   </div>
@@ -506,15 +496,21 @@
     const final = document.getElementById('final');
 
     let opened = false;
+    let choicesLocked = false; // para não “desaparecer” depois de aparecer
 
     function maybeShowChoices() {
-      const margin = 40;
+      if (choicesLocked) return;
 
+      const margin = 60; // margem mais generosa para telemóvel
+
+      const noScroll = paperScroll.scrollHeight <= paperScroll.clientHeight + 2;
       const atBottom =
         paperScroll.scrollTop + paperScroll.clientHeight >= paperScroll.scrollHeight - margin;
 
-      if (atBottom) choices.classList.add('show');
-      else choices.classList.remove('show'); // se quiseres que desapareça ao subir, deixa; se não, apaga esta linha
+      if (noScroll || atBottom) {
+        choices.classList.add('show');
+        choicesLocked = true; // uma vez mostrado, fica mostrado
+      }
     }
 
     function openLetter(){
@@ -523,11 +519,10 @@
 
       wrap.classList.add('is-open');
 
-      // iOS/Android: dá um instante para o layout calcular alturas e depois valida scroll/botões
-      setTimeout(() => {
-        paperScroll.scrollTop = 0;
-        maybeShowChoices(); // caso a carta seja curta (sem scroll), mostra logo
-      }, 700);
+      // chamar mais do que uma vez porque em mobile o layout “assenta” após a animação
+      setTimeout(() => { paperScroll.scrollTop = 0; maybeShowChoices(); }, 500);
+      setTimeout(() => { maybeShowChoices(); }, 1100);
+      setTimeout(() => { maybeShowChoices(); }, 1700);
     }
 
     seal.addEventListener('click', openLetter);
@@ -539,6 +534,7 @@
     });
 
     paperScroll.addEventListener('scroll', maybeShowChoices, { passive: true });
+    paperScroll.addEventListener('touchend', maybeShowChoices, { passive: true });
 
     btnAccept.addEventListener('click', () => {
       nudge.classList.add('show');
